@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vernier Caliper & Micrometer Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f2f5;
+      margin: 0;
+    }
+    .container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 350px;
+    }
+    h1 {
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, button, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    h2 {
+      color: green;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Measurement Calculator</h1>
+    <label for="calculator">Choose a Calculator:</label>
+    <select id="calculator" onchange="toggleForm()">
+      <option value="vernier">Vernier Caliper</option>
+      <option value="micrometer">Micrometer</option>
+    </select>
+    
+    <!-- Vernier Caliper Form -->
+    <div id="vernierForm">
+      <label>Main Scale Reading (MSR):</label>
+      <input type="number" id="vernier_msr" step="any" required />
+      
+      <label>Vernier Scale Reading (VSR):</label>
+      <input type="number" id="vernier_vsr" step="any" required />
+      
+      <label>Least Count (LC):</label>
+      <input type="number" id="vernier_lc" step="any" required />
+      
+      <button onclick="calculateVernier()">Calculate Vernier Total Reading</button>
+    </div>
+
+    <!-- Micrometer Form -->
+    <div id="micrometerForm" style="display: none;">
+      <label>Main Scale Reading (MSR):</label>
+      <input type="number" id="micrometer_msr" step="any" required />
+      
+      <label>Circular Scale Reading (CSR):</label>
+      <input type="number" id="micrometer_csr" step="any" required />
+      
+      <label>Least Count (LC):</label>
+      <input type="number" id="micrometer_lc" step="any" required />
+      
+      <button onclick="calculateMicrometer()">Calculate Micrometer Total Reading</button>
+    </div>
+
+    <h2 id="result"></h2>
+  </div>
+
+  <script>
+    function toggleForm() {
+      const selectedCalculator = document.getElementById('calculator').value;
+      document.getElementById('vernierForm').style.display = selectedCalculator === 'vernier' ? 'block' : 'none';
+      document.getElementById('micrometerForm').style.display = selectedCalculator === 'micrometer' ? 'block' : 'none';
+      document.getElementById('result').innerText = "";
+    }
+
+    function calculateVernier() {
+      const msr = parseFloat(document.getElementById('vernier_msr').value);
+      const vsr = parseFloat(document.getElementById('vernier_vsr').value);
+      const lc = parseFloat(document.getElementById('vernier_lc').value);
+
+      if (isNaN(msr) || isNaN(vsr) || isNaN(lc)) {
+        document.getElementById('result').innerText = "Please enter valid numbers!";
+      } else {
+        const tr = msr + (vsr * lc);
+        document.getElementById('result').innerText = `Vernier Caliper Total Reading (TR) = ${tr.toFixed(2)}`;
+      }
+    }
+
+    function calculateMicrometer() {
+      const msr = parseFloat(document.getElementById('micrometer_msr').value);
+      const csr = parseFloat(document.getElementById('micrometer_csr').value);
+      const lc = parseFloat(document.getElementById('micrometer_lc').value);
+
+      if (isNaN(msr) || isNaN(csr) || isNaN(lc)) {
+        document.getElementById('result').innerText = "Please enter valid numbers!";
+      } else {
+        const tr = msr + (csr * lc);
+        document.getElementById('result').innerText = `Micrometer Total Reading (TR) = ${tr.toFixed(2)}`;
+      }
+    }
+  </script>
+</body>
+</html>
